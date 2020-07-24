@@ -12,5 +12,7 @@ class Web::Moderator::CreateForm < User
   validates :workplace, presence: true
   validates_inclusion_of :agree_with_terms_and_policies, in: [true, false]
 
-  # TODO: find way to set role here or set role in moderator controller
+  def role=(value)
+    write_attribute(role: :moderator)
+  end
 end

@@ -15,7 +15,9 @@ class Web::Legal::CreateForm < User
   validates_inclusion_of :agree_with_terms_and_policies, in: [true, false]
   validates_inclusion_of :create_organization, in: [true, false]
 
-  # TODO: create organization entity
-  # TODO: handle create_organization with default color (Settings.organization.color) in controller (maybe service or mutator)
-  # TODO: find way to set role (legal) here or set role in legal controller
+  def role=(value)
+    super(:legal)
+  end
+
+  # TODO: create_organization with default color (Settings.organization.color) in controller (maybe service or mutator)
 end
