@@ -10,6 +10,8 @@ FactoryBot.define do
 
   trait :moderator do
     role { :moderator }
+    profession
+    workplace
   end
 
   trait :legal do

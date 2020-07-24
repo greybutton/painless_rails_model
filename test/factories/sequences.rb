@@ -12,4 +12,12 @@ FactoryBot.define do
   sequence :email do
     Faker::Internet.email
   end
+
+  sequence :profession do
+    Faker::Job.position
+  end
+
+  sequence :workplace do
+    Faker::Job.field
+  end
 end
