@@ -4,6 +4,10 @@ class User < ApplicationRecord
   extend Enumerize
   include AASM
 
+  before_save :set_latitude, :set_longitude
+  # Check address is not nil, not address string
+  # validate :latitude, :longitude
+
   enumerize :role, in: %i[user moderator legal], default: :user, predicates: true
 
   aasm :state, column: :state do
@@ -25,5 +29,13 @@ class User < ApplicationRecord
 
   def email=(value)
     super(value.mb_chars.downcase)
+  end
+
+  def set_latitude
+    self.latitude = UserService.latitude(address)
+  end
+
+  def set_longitude
+    self.longitude = UserService.longitude(address)
   end
 end
