@@ -15,9 +15,32 @@ class Web::Legal::CreateForm < User
   validates_inclusion_of :agree_with_terms_and_policies, in: [true, false]
   validates_inclusion_of :create_organization, in: [true, false]
 
-  def role=(value)
+  def role=(_value)
     super(:legal)
   end
 
-  # TODO: create_organization with default color (Settings.organization.color) in controller (maybe service or mutator)
+  # Example create user with organization
+
+  def create
+    @user = UserMutator.create(user_params)
+
+    if @user.persisted?
+      f(:success)
+      redirect_to action: :index
+    else
+      render :new
+    end
+  end
+
+  module UserMutator
+    class << self
+      def create(params)
+        user = Web::Legal::CreateForm.new(params)
+        can_create_organization = user.save && user_params[:create_organization]
+        Organization.create!(owner: user, color: Settings.organization.color) if can_create_organization
+
+        user
+      end
+    end
+  end
 end
