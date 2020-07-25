@@ -1,7 +1,8 @@
-module UserService
+module User::ModeratorService
   class << self
     def create(params)
       params = update_params(params)
+      params.merge(role: :moderator)
 
       params
     end

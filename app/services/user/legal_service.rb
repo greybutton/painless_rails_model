@@ -1,9 +1,12 @@
-module UserService
+module User::LegalService
   class << self
     def create(params)
       params = update_params(params)
+      params.merge(role: :legal)
+      user = User.create!(params)
+      can_create_organization = user && params['create_organization']
 
-      params
+      OrganizationMutator.create(user) if can_create_organization
     end
 
     def update(params)
